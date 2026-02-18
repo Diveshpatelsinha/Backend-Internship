@@ -15,12 +15,18 @@ exports.getTasks = async (req,res)=>{
 }
 
 exports.createTask = async (req,res)=>{
+    if(!req.body.title){
+        console.log("title missing")  
+    }
+
     const task = await Task.create({
         ...req.body,
         createdBy:req.user
     })
+
     res.json(task)
 }
+
 
 exports.updateTask = async (req,res)=>{
     const task = await Task.findByIdAndUpdate(req.params.id,req.body,{new:true})
