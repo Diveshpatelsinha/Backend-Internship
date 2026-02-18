@@ -7,7 +7,8 @@ exports.register = async (req,res)=>{
         const {name,email,password} = req.body
 
         const userExist = await User.findOne({email})
-        if(userExist) return res.json({msg:"user exists"})
+     if(userExist) return res.status(200).json({msg:"user already exists"})
+
 
         const hash = await bcrypt.hash(password,10)
 
@@ -27,7 +28,8 @@ exports.login = async (req,res)=>{
     const {email,password} = req.body
 
     const user = await User.findOne({email})
-    if(!user) return res.json({msg:"no user"})
+    if(!user) return res.status(201).json({msg:"user not found"})
+
 
     const match = await bcrypt.compare(password,user.password)
     if(!match) return res.json({msg:"wrong password"})
